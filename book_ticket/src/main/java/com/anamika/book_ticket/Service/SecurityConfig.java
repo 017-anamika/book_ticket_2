@@ -2,6 +2,7 @@ package com.anamika.book_ticket.Service;
 
 
 import com.anamika.book_ticket.JWT.JWTAuthenticationFilter;
+import com.anamika.book_ticket.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,11 +27,14 @@ import static org.springframework.security.authorization.AuthorityReactiveAuthor
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
     private JWTAuthenticationFilter jwtAuthenticationFilter;
 
+   public SecurityConfig(JWTAuthenticationFilter jwtAuthenticationFilter) {
+       this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+   }
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, UserRepository userRepository) throws Exception {
         http
                 .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth->auth
@@ -39,15 +43,15 @@ public class SecurityConfig {
                          .anyRequest().authenticated())
                 .sessionManagement(session->session
                           .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider())
+                .authenticationProvider(authenticationProvider(userRepository))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider(UserRepository userRepository){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setUserDetailsService(userDetailsService(userRepository));
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
@@ -55,8 +59,8 @@ public class SecurityConfig {
 
     @Bean
 
-    public UserDetailsService userDetailsService(){
-        return new CustomUserDetailService();
+    public UserDetailsService userDetailsService(UserRepository userRepository){
+        return new CustomUserDetailService(userRepository);
     }
 
 

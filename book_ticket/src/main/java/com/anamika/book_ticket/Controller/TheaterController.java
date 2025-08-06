@@ -14,8 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/theater")
 public class TheaterController {
-    @Autowired
     private TheaterService theaterService;
+    public TheaterController(TheaterService theaterService) {
+        this.theaterService = theaterService;
+    }
 
     public ResponseEntity<Theater>addTheater(@RequestBody TheaterDTO theaterDTO) {
         return ResponseEntity.ok(theaterService.addTheater(theaterDTO));

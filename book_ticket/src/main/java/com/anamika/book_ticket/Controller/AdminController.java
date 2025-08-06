@@ -2,9 +2,8 @@ package com.anamika.book_ticket.Controller;
 
 
 import com.anamika.book_ticket.DTO.RegisterRequestDTO;
-import com.anamika.book_ticket.Entity.userEntity;
+import com.anamika.book_ticket.Entity.User;
 import com.anamika.book_ticket.Service.AuthenticationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
-    @Autowired
     private  AuthenticationService authenticationService;
 
     public AdminController(AuthenticationService authenticationService) {
@@ -26,7 +24,7 @@ public class AdminController {
     }
 
     @PostMapping("/registeradminuser")
-    public ResponseEntity<userEntity>registerAdminUser(@RequestBody RegisterRequestDTO registerRequestDTO) {
+    public ResponseEntity<User>registerAdminUser(@RequestBody RegisterRequestDTO registerRequestDTO) {
         return ResponseEntity.ok(authenticationService.registerAdminUser(registerRequestDTO));
     }
 }

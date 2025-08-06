@@ -25,13 +25,13 @@ public class Booking {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name ="user_id",nullable = false)
-    private userEntity user;
+    private User user;
 
 
-    public userEntity getUser() {
+    public User getUser() {
             return user;
     }
-    public void setUser(userEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -84,6 +84,4 @@ public class Booking {
     public void setSeatNumbers(List<String> seatNumbers) {
         this.seatNumbers = seatNumbers;
     }
-
-
 }

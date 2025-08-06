@@ -3,7 +3,6 @@ package com.anamika.book_ticket.Service;
 import com.anamika.book_ticket.DTO.TheaterDTO;
 import com.anamika.book_ticket.Entity.Theater;
 import com.anamika.book_ticket.Repository.TheaterRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,8 +11,12 @@ import java.util.Optional;
 @Service
 public class TheaterService {
 
-    @Autowired
+//    @Autowired
     TheaterRepository theaterRepository;
+
+    public TheaterService(TheaterRepository theaterRepository) {
+        this.theaterRepository = theaterRepository;
+    }
     public Theater addTheater(TheaterDTO theaterDTO){
         Theater theater = new Theater();
         theater.setTheaterName(theaterDTO.getTheaterName());
@@ -24,7 +27,7 @@ public class TheaterService {
     }
 
     public List<Theater> getTheaterByLocation(String location){
-        Optional<List<Theater>> listOfTheaterBox = theaterRepository.findByLocation(location);
+        Optional<List<Theater>> listOfTheaterBox = theaterRepository.findByTheaterLocation(location);
         if(listOfTheaterBox.isPresent()){
             return listOfTheaterBox.get();
         }else throw new RuntimeException("No theaters found for the location: " + location);

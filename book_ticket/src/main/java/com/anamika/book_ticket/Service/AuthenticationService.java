@@ -3,10 +3,9 @@ package com.anamika.book_ticket.Service;
 import com.anamika.book_ticket.DTO.LoginRequestDTO;
 import com.anamika.book_ticket.DTO.LoginResponseDTO;
 import com.anamika.book_ticket.DTO.RegisterRequestDTO;
-import com.anamika.book_ticket.Entity.userEntity;
+import com.anamika.book_ticket.Entity.User;
 import com.anamika.book_ticket.JWT.JWTService;
 import com.anamika.book_ticket.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,25 +19,27 @@ import java.util.Set;
 
 public class AuthenticationService {
 
-    @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @Autowired
     private AuthenticationManager authenticationManager;
+    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+    }
 
 
     private JWTService jwtService;
 
-    public userEntity registerNormalUser(RegisterRequestDTO registerRequestDTO){
+    public User registerNormalUser(RegisterRequestDTO registerRequestDTO){
         if(userRepository.findByUsername(registerRequestDTO.getUsername()).isPresent()){
             throw new RuntimeException("Username is already in use");
         }
         Set<String> roles = new HashSet<>();
         roles.add("ROLE_USER");
-        userEntity user = new userEntity();
+        User user = new User();
         user.setUsername(registerRequestDTO.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword()));
         user.setEmail(registerRequestDTO.getEmail());
@@ -46,7 +47,7 @@ public class AuthenticationService {
         return userRepository.save(user);
     }
 
-    public userEntity registerAdminUser(RegisterRequestDTO registerRequestDTO){
+    public User registerAdminUser(RegisterRequestDTO registerRequestDTO){
         if(userRepository.findByUsername(registerRequestDTO.getUsername()).isPresent()){
             throw new RuntimeException("Username is already in use");
         }
@@ -54,7 +55,7 @@ public class AuthenticationService {
         roles.add("ROLE_ADMIN");
         roles.add("ROLE_USER");
 
-        userEntity user = new userEntity();
+        User user = new User();
         user.setUsername(registerRequestDTO.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword()));
         user.setEmail(registerRequestDTO.getEmail());
@@ -63,7 +64,7 @@ public class AuthenticationService {
     }
 
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO){
-        userEntity user = userRepository.findByUsername(loginRequestDTO.getUsername())
+        User user = userRepository.findByUsername(loginRequestDTO.getUsername())
                 .orElseThrow(()->new RuntimeException("Username not found"));
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

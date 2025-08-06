@@ -19,13 +19,19 @@ import java.util.Optional;
 @Data
 @Service
 public class ShowService {
-    @Autowired
+//    @Autowired
     private ShowRepository showRepository;
-    @Autowired
+//    @Autowired
     private MovieRepository movieRepository;
 
-    @Autowired
+//    @Autowired
     private TheaterRepository theaterRepository;
+
+    public ShowService(ShowRepository showRepository, MovieRepository movieRepository, TheaterRepository theaterRepository) {
+        this.showRepository = showRepository;
+        this.movieRepository = movieRepository;
+        this.theaterRepository = theaterRepository;
+    }
 
     public showEntity createShow(ShowDTO showDTO){
         Movie movie = movieRepository.findById(showDTO.getMovieId())
@@ -46,7 +52,7 @@ public class ShowService {
     }
 
     public List<showEntity>getShowsByMovie(Long movieId){
-        Optional<List<showEntity>>showListBox = showRepository.findByMovieId(movieId);
+        Optional<List<showEntity>>showListBox = showRepository.findByMovie_Id(movieId);
         if(showListBox.isPresent()){
             return showListBox.get();
         }
@@ -54,7 +60,7 @@ public class ShowService {
     }
 
     public List<showEntity>getShowsByTheater(Long theaterid){
-        Optional<List<showEntity>>showListBox = showRepository.findByMovieId(theaterid);
+        Optional<List<showEntity>>showListBox = showRepository.findByMovie_Id(theaterid);
         if(showListBox.isPresent()){
             return showListBox.get();
         }

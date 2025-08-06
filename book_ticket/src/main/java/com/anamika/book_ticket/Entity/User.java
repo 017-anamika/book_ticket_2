@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Entity
 @Data
 @Table(name = "users")
-public class userEntity implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,6 +76,4 @@ public class userEntity implements UserDetails {
     public void setRoles(Set<String> roles) {
         this.roles = roles;
     }
-
-
 }

@@ -5,13 +5,12 @@ import com.anamika.book_ticket.DTO.BookingDTO;
 import com.anamika.book_ticket.Entity.Booking;
 import com.anamika.book_ticket.Entity.BookingStatus;
 import com.anamika.book_ticket.Entity.showEntity;
-import com.anamika.book_ticket.Entity.userEntity;
+import com.anamika.book_ticket.Entity.User;
 import com.anamika.book_ticket.Repository.BookingRepository;
 import com.anamika.book_ticket.Repository.ShowRepository;
 import com.anamika.book_ticket.Repository.UserRepository;
 import lombok.Data;
 //import org.apache.catalina.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,14 +25,14 @@ public class BookingService {
 
     private BookingRepository bookingRepository;
 
+    private ShowRepository showRepository;
+    private UserRepository userRepository;
+
     public BookingService(BookingRepository bookingRepository, ShowRepository showRepository, UserRepository userRepository) {
         this.bookingRepository = bookingRepository;
         this.showRepository = showRepository;
         this.userRepository = userRepository;
     }
-
-    private ShowRepository showRepository;
-    private UserRepository userRepository;
 
     public Booking createBooking(BookingDTO bookingDTO){
         showEntity showEntity = showRepository.findById(bookingDTO.getShowId())
@@ -47,7 +46,7 @@ public class BookingService {
         }
         validateDuplicateSeats(showEntity.getId(),bookingDTO.getSeatNumbers());
 
-        userEntity userr = userRepository.findById(bookingDTO.getUserId())
+        User userr = userRepository.findById(bookingDTO.getUserId())
                         .orElseThrow(()-> new RuntimeException("User not found"));
         Booking booking = new Booking();
         booking.setShowEntity(showEntity);
@@ -98,11 +97,11 @@ public class BookingService {
     }
 
     public List<Booking> getUserBookings(Long userId){
-        return bookingRepository.findByUserID(userId);
+        return bookingRepository.findByUser_Id(userId);
     }
 
     public List<Booking> getShowBookings(Long showId){
-        return bookingRepository.findByShowID(showId);
+        return bookingRepository.findByShowEntity_Id(showId);
     }
 
     public Booking confirmBooking(Long bookingId){

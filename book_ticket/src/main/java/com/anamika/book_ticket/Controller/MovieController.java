@@ -15,8 +15,10 @@ import java.util.List;
 @RequestMapping("/api/")
 public class MovieController {
 
-    @Autowired
     private MovieService movieService;
+    public MovieController(MovieService movieService) {
+        this.movieService = movieService;
+    }
 
     @PostMapping("/addmovie")
     @PreAuthorize("hasRole('ADMIN')")

@@ -13,8 +13,10 @@ import java.util.List;
 @RequestMapping("/api/show")
 public class ShowController {
 
-    @Autowired
     private ShowService showService;
+    public ShowController(ShowService showService) {
+        this.showService = showService;
+    }
 
     @PostMapping("/createshow")
     public ResponseEntity<showEntity> createShow(@RequestBody ShowDTO showDTO){
