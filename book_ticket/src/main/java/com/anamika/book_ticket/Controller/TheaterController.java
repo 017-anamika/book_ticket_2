@@ -19,10 +19,12 @@ public class TheaterController {
         this.theaterService = theaterService;
     }
 
+    @PostMapping("/addtheater")
     public ResponseEntity<Theater>addTheater(@RequestBody TheaterDTO theaterDTO) {
         return ResponseEntity.ok(theaterService.addTheater(theaterDTO));
     }
 
+    @PostMapping("gettheaterbylocation")
     public ResponseEntity<List<Theater>>getTheaterByLocation(@RequestParam String location) {
         return ResponseEntity.ok(theaterService.getTheaterByLocation(location));
     }

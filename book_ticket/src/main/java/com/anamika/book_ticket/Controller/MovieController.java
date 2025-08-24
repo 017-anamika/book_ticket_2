@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/movies")
 public class MovieController {
 
     private MovieService movieService;
@@ -38,7 +38,7 @@ public class MovieController {
 
     @GetMapping("/getmoviesbylanguage")
     public ResponseEntity<List<Movie>> getMovieByLanguage(@RequestParam String language)  {
-        return ResponseEntity.ok(movieService.getMovieByGenre(language));
+        return ResponseEntity.ok(movieService.getMoviesByLanguage(language));
     }
 
     @GetMapping("/getmoviesbytitle")

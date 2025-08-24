@@ -23,6 +23,8 @@ public class AuthenticationService {
 
     private PasswordEncoder passwordEncoder;
 
+    private JWTService jwtService;
+
     private AuthenticationManager authenticationManager;
     public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
@@ -31,7 +33,6 @@ public class AuthenticationService {
     }
 
 
-    private JWTService jwtService;
 
     public User registerNormalUser(RegisterRequestDTO registerRequestDTO){
         if(userRepository.findByUsername(registerRequestDTO.getUsername()).isPresent()){
@@ -66,12 +67,11 @@ public class AuthenticationService {
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO){
         User user = userRepository.findByUsername(loginRequestDTO.getUsername())
                 .orElseThrow(()->new RuntimeException("Username not found"));
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
+
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken= new UsernamePasswordAuthenticationToken(
                         loginRequestDTO.getUsername(),
-                        loginRequestDTO.getPassword()
-                )
-        );
+                        loginRequestDTO.getPassword());
+        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         String token = jwtService.generateToken(user);
         return LoginResponseDTO.builder()
                 .jwtToken(token)

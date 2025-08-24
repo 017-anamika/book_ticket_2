@@ -16,13 +16,14 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JWTService {
+public class  JWTService {
 
-    @Value("${jwt.secret}")
-    private String secretKey;
+   // @Value("${jwt.secret}")
+    private String secretKey= "s3cr3tKey!@#987_JWT_T0ken$Gen2025*Secure";
 
-    @Value("${jwt.expiration}")
-    private Long jwtExpiration;
+   // @Value("${jwt.expiration}")
+   private Long jwtExpiration = 1000 * 60 * 60 * 5L; // 5 hours
+
 
     public String extractUsername (String jwtToken) {
         return extractClaim(jwtToken, Claims::getSubject);
@@ -39,6 +40,7 @@ public class JWTService {
                 .build()
                 .parseSignedClaims(jwtToken)
                 .getPayload();
+
     }
 
     public SecretKey getSignInKey(){
@@ -46,7 +48,11 @@ public class JWTService {
     }
 
     public String generateToken(UserDetails userDetails) {
-return generateToken(new HashMap<>(),userDetails);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("username", userDetails.getUsername());
+        claims.put("authorities", userDetails.getAuthorities());
+        claims.put("email", userDetails.getUsername());
+       return generateToken(claims,userDetails);
     }
 
     public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails){
