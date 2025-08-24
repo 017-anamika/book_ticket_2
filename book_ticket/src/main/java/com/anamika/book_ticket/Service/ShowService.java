@@ -60,7 +60,7 @@ public class ShowService {
     }
 
     public List<showEntity>getShowsByTheater(Long theaterid){
-        Optional<List<showEntity>>showListBox = showRepository.findByMovie_Id(theaterid);
+        Optional<List<showEntity>>showListBox = showRepository.findByTheater_Id(theaterid);
         if(showListBox.isPresent()){
             return showListBox.get();
         }

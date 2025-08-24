@@ -25,11 +25,12 @@ public class AuthenticationService {
 
     private JWTService jwtService;
 
-    private AuthenticationManager authenticationManager;
-    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+    private final AuthenticationManager authenticationManager;
+    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
 

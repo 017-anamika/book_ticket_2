@@ -37,7 +37,6 @@ public class TheaterController {
 
     @DeleteMapping("/deletetheater/{id}")
     @PreAuthorize("hashRole('ADMIN')")
-
     public ResponseEntity<Void>deleteTheater(@PathVariable Long id) {
         theaterService.deleteTheater(id);
         return ResponseEntity.ok().build();

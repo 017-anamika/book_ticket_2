@@ -22,11 +22,15 @@ import java.util.stream.Collectors;
 @Component
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private UserRepository userRepository;
+//    @Autowired
+    private final UserRepository userRepository;
 
-    @Autowired
-    private JWTService jwtService;
+//    @Autowired
+    private final JWTService jwtService;
+    public JWTAuthenticationFilter(UserRepository userRepository, JWTService jwtService) {
+        this.userRepository = userRepository;
+        this.jwtService = jwtService;
+    }
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         final String authHeader = request.getHeader("Authorization");
         final String jwtToken;
