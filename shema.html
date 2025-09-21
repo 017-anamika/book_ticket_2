@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Database Schema: Book Ticket System</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f4f4f4;
+      margin: 20px;
+    }
+    h2 {
+      color: #2c3e50;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      background-color: #fff;
+    }
+    th, td {
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #3498db;
+      color: #ffffff;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .primary-key {
+      font-weight: bold;
+      color: #c0392b;
+    }
+    .foreign-key {
+      font-style: italic;
+      color: #27ae60;
+    }
+    .relationships {
+      background-color: #ecf0f1;
+      padding: 15px;
+      border-left: 5px solid #3498db;
+      margin-top: -30px;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Database Schema: Book Ticket System</h2>
+
+  <h3>Table: <code>users</code></h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Column</th>
+        <th>Type</th>
+        <th>Constraints</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="primary-key">id</td>
+        <td>BIGINT</td>
+        <td>PRIMARY KEY, AUTO_INCREMENT</td>
+        <td>Unique identifier for each user.</td>
+      </tr>
+      <tr>
+        <td>username</td>
+        <td>VARCHAR</td>
+        <td>NOT NULL, UNIQUE</td>
+        <td>The user's login name.</td>
+      </tr>
+      <tr>
+        <td>password</td>
+        <td>VARCHAR</td>
+        <td>NOT NULL</td>
+        <td>The user's encrypted password.</td>
+      </tr>
+      <tr>
+        <td>email</td>
+        <td>VARCHAR</td>
+        <td>NOT NULL</td>
+        <td>The user's email address.</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="relationships">
+    <strong>Relationships:</strong> Has a one-to-many relationship with the <code>bookings</code> table.
+  </div>
+
+  <h3>Table: <code>movies</code></h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Column</th>
+        <th>Type</th>
+        <th>Constraints</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="primary-key">id</td>
+        <td>BIGINT</td>
+        <td>PRIMARY KEY, AUTO_INCREMENT</td>
+        <td>Unique identifier for each movie.</td>
+      </tr>
+      <tr>
+        <td>name</td>
+        <td>VARCHAR</td>
+        <td>NOT NULL</td>
+        <td>The title of the movie.</td>
+      </tr>
+      <tr>
+        <td>genre</td>
+        <td>VARCHAR</td>
+        <td></td>
+        <td>The genre of the movie (e.g., Action, Comedy).</td>
+      </tr>
+      <tr>
+        <td>description</td>
+        <td>TEXT</td>
+        <td></td>
+        <td>A brief summary of the movie.</td>
+      </tr>
+      <tr>
+        <td>duration</td>
+        <td>INT</td>
+        <td></td>
+        <td>The length of the movie in minutes.</td>
+      </tr>
+      <tr>
+        <td>releaseDate</td>
+        <td>DATE</td>
+        <td></td>
+        <td>The official release date of the movie.</td>
+      </tr>
+      <tr>
+        <td>language</td>
+        <td>VARCHAR</td>
+        <td></td>
+        <td>The language the movie is in.</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="relationships">
+    <strong>Relationships:</strong> Has a one-to-many relationship with the <code>show_entity</code> table.
+  </div>
+
+  <h3>Table: <code>theaters</code></h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Column</th>
+        <th>Type</th>
+        <th>Constraints</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="primary-key">id</td>
+        <td>BIGINT</td>
+        <td>PRIMARY KEY, AUTO_INCREMENT</td>
+        <td>Unique identifier for each theater.</td>
+      </tr>
+      <tr>
+        <td>theaterName</td>
+        <td>VARCHAR</td>
+        <td>NOT NULL</td>
+        <td>The name of the theater.</td>
+      </tr>
+      <tr>
+        <td>theaterLocation</td>
+        <td>VARCHAR</td>
+        <td>NOT NULL</td>
+        <td>The physical location of the theater.</td>
+      </tr>
+      <tr>
+        <td>theaterCapacity</td>
+        <td>INT</td>
+        <td>NOT NULL</td>
+        <td>The total number of seats in the theater.</td>
+      </tr>
+      <tr>
+        <td>theaterScreenType</td>
+        <td>VARCHAR</td>
+        <td></td>
+        <td>The type of screen (e.g., IMAX, 3D).</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="relationships">
+    <strong>Relationships:</strong> Has a one-to-many relationship with the <code>show_entity</code> table.
+  </div>
+
+  <h3>Table: <code>show_entity</code></h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Column</th>
+        <th>Type</th>
+        <th>Constraints</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="primary-key">id</td>
+        <td>BIGINT</td>
+        <td>PRIMARY KEY, AUTO_INCREMENT</td>
+        <td>Unique identifier for each show.</td>
+      </tr>
+      <tr>
+        <td>showTime</td>
+        <td>DATETIME</td>
+        <td>NOT NULL</td>
+        <td>The date and time the show starts.</td>
+      </tr>
+      <tr>
+        <td>price</td>
+        <td>DOUBLE</td>
+        <td>NOT NULL</td>
+        <td>The price of a single ticket for this show.</td>
+      </tr>
+      <tr>
+        <td class="foreign-key">movie_id</td>
+        <td>BIGINT</td>
+        <td>FOREIGN KEY to movies(id)</td>
+        <td>Links to the movie being shown.</td>
+      </tr>
+      <tr>
+        <td class="foreign-key">theater_id</td>
+        <td>BIGINT</td>
+        <td>FOREIGN KEY to theaters(id)</td>
+        <td>Links to the theater where the show is held.</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="relationships">
+    <strong>Relationships:</strong> Has many-to-one relationships with <code>movies</code> and <code>theaters</code>, and a one-to-many relationship with <code>bookings</code>.
+  </div>
+
+  <h3>Table: <code>bookings</code></h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Column</th>
+        <th>Type</th>
+        <th>Constraints</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="primary-key">id</td>
+        <td>BIGINT</td>
+        <td>PRIMARY KEY, AUTO_INCREMENT</td>
+        <td>Unique identifier for each booking.</td>
+      </tr>
+      <tr>
+        <td>numberOfSeats</td>
+        <td>INT</td>
+        <td>NOT NULL</td>
+        <td>The number of seats booked.</td>
+      </tr>
+      <tr>
+        <td>bookingTime</td>
+        <td>DATETIME</td>
+        <td>NOT NULL</td>
+        <td>The timestamp when the booking was made.</td>
+      </tr>
+      <tr>
+        <td>price</td>
+        <td>DOUBLE</td>
+        <td>NOT NULL</td>
+        <td>The total price for the booking.</td>
+      </tr>
+      <tr>
+        <td>bookingStatus</td>
+        <td>ENUM</td>
+        <td>('CONFIRMED', 'CANCELLED', 'PENDING')</td>
+        <td>The current status of the booking.</td>
+      </tr>
+      <tr>
+        <td class="foreign-key">user_id</td>
+        <td>BIGINT</td>
+        <td>FOREIGN KEY to users(id)</td>
+        <td>Links to the user who made the booking.</td>
+      </tr>
+      <tr>
+        <td class="foreign-key">show_id</td>
+        <td>BIGINT</td>
+        <td>FOREIGN KEY to show_entity(id)</td>
+        <td>Links to the specific show that was booked.</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="relationships">
+    <strong>Relationships:</strong> Has many-to-one relationships with <code>users</code> and <code>show_entity</code>.
+  </div>
+
+  <h3>Table: <code>booking_seat_numbers</code></h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Column</th>
+        <th>Type</th>
+        <th>Constraints</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="foreign-key">booking_id</td>
+        <td>BIGINT</td>
+        <td>FOREIGN KEY to bookings(id)</td>
+        <td>Links back to the parent booking.</td>
+      </tr>
+      <tr>
+        <td>seatNumbers</td>
+        <td>VARCHAR</td>
+        <td></td>
+        <td>Stores a single seat number (e.g., "A1", "B5").</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="relationships">
+    <strong>Note:</strong> This is a collection table created by JPA to store the list of seat numbers for a booking.
+  </div>
+
+</body>
+</html>
